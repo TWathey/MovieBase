@@ -12,7 +12,7 @@
 > $ source venv/bin/activate
 
 4. Install the necessary packages with:
-> $ pip install  -r requirments.txt
+> $ pip install  -r requirements.txt
 
 5. Deploy the database with:
 > $ python manage.py deploy
