@@ -1,0 +1,45 @@
+{% extends "homepage.html"%} {% block title %}Add An Actor{% endblock %} {% block page_content%}
+
+<div class="container">
+  <h1 class="mt-5"><i class="fa fa-user-circle-o" aria-hidden="true"></i> Add Actors:</h1>
+  <form action="/actor/add" method="post" id="add-actor-form">
+    <div class="form-group">
+      <label>Name</label>
+      <input class="form-control" type="text" name="name" placeholder="Name of the Actor" required="true">
+    </div>
+    <div class="form-group">
+      <label>Favorite Quote</label>
+      <textarea class="form-control" name="quote" placeholder="Actors Summary" required="true"></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Add Actor</button>
+    <button type="submit" class="btn btn-success" id="insert-ajax-btn">Add Actor Ajax</button>
+  </form>
+</div>
+
+{% endblock%} {% block scripts%} {{super()}}
+<script>
+  $(document).ready(function() {
+    $("#insert-ajax-btn").click(function(event) {
+      event.preventDefault();
+      $.ajax({
+          type: "POST",
+          url: "/api/actor/add/" + actor_id
+          data: $("#actor").serialize(),
+          success: function(response) {
+            window.location.replace("/actors");
+          }
+        })
+        .fail(function(error) {
+
+          swal({
+            title: "Oops...",
+            text: "Insertion failed",
+            type: "error",
+            timer: 2000,
+            showConfirmButton: false
+          });
+        });
+    });
+  });
+</script>
+{% endblock%}

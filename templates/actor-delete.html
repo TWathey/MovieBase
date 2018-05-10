@@ -1,0 +1,28 @@
+{% extends "homepage.html"%} {% block title %}Delete Actor{% endblock %} {% block page_content%}
+
+<div class="container">
+  <h1 class="mt-5"><i class="fa fa-movie" aria-hidden="true"></i> Delete Actor:</h1>
+  <form action="/actor/delete/{{actor.id}}" method="post">
+    <div class="form-group">
+      <label>Name</label>
+      <input class="form-control" type="text" name="name" value="{{actor.name}}" required="true" readonly="true">
+    </div>
+    <div class="form-group">
+      <label>Favorite Quote</label>
+      <textarea class="form-control" name="quote" required="true" readonly="true">{{actor.quote}}</textarea>
+    </div>
+    <button type="submit" class="btn btn-danger" id="delete_btn">Delete</button>
+  </form>
+</div>
+
+{% endblock%} {% block scripts%} {{super()}}
+<script>
+  $(document).ready(function() {
+    $('#delete_btn').click(function() {
+      if (!confirm('All related movies will be deleted also! Are you positive?')) {
+        return false;
+      }
+    })
+  });
+</script>
+{% endblock%}

@@ -1,0 +1,91 @@
+{% extends "homepage.html"%} {% block title %}All Actors{% endblock %} {% block page_content%}
+
+
+<div class="container">
+  <h1 class="mt-5"><i class="fa fa-user-circle-o" aria-hidden="true"></i> Actors:</h1>
+  <div class="row bottom-margin">
+    <a href="/actor/add" class="btn btn-primary" role="button" aria-disabled="true">Add Actor</a>
+  </div>
+  {% if actors %}
+  <table class="table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Favorite Quote</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for actor in actors %}
+      <tr>
+        <th scope="row">{{actor.id}}</th>
+        <td>{{actor.name}}</td>
+        <td>{{actor.quote}}</td>
+        <td>
+          <a href="/actor/edit/{{actor.id}}" class="btn btn-success" role="button">Edit</a>
+          <a href="/actor/delete/{{actor.id}}" class="btn btn-danger" role="button">Delete</a>
+          <button class="btn btn-warning delete_ajax_btn" role="button" data-actor-id="{{actor.id}}">Delete Ajax</a>
+              </td>
+          </tr>
+          {% endfor%}
+        </tbody>
+      </table>
+    {% else %}
+      <h3>There are no actor in the database yet.</h3>
+    {% endif %}
+  </div>
+
+{% endblock%}
+
+{% block scripts%}
+{{super()}}
+<script>
+  $(document).ready(function() {
+    $(".delete_ajax_btn").click(function(event) {
+      var actor_id = $(this).data("actor-id");
+      var row = $(this).parent().parent();
+      swal({
+          title: "Are you sure?",
+          text: "All movies of this actor will be deleted too!",
+          type: "warning",
+          html: true,
+          showCancelButton: true,
+          confirmButtonColor: "#DD6B55",
+          confirmButtonText: "Yes, delete it!",
+          closeOnConfirm: false,
+          showLoaderOnConfirm: true
+        },
+        function(isConfirm) {
+          if (isConfirm) {
+            $.ajax({
+                type: "DELETE",
+                url: "/api/actor/" + actor_id,
+                success: function(response) {
+                  console.log(response);
+                  row.remove();
+                  swal({
+                    title: "Deleted!",
+                    text: response.name + " has been deleted.",
+                    type: "success",
+                    timer: 2500,
+                    showConfirmButton: false
+                  });
+                }
+              })
+              .fail(function(error) {
+
+                swal({
+                  title: "Oops...",
+                  text: "Deletion failed",
+                  type: "error",
+                  timer: 2000,
+                  showConfirmButton: false
+                });
+              });
+          }
+        });
+    });
+  });
+</script>
+{% endblock%}

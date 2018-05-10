@@ -1,0 +1,20 @@
+{% extends "homepage.html"%} {% block title %}Home Page{% endblock %} {% block head%} {{ super() }} {% endblock%} {% block page_content%}
+
+<div class="container">
+  <h1 class="mt-5"><i class="fa fa-address-card" aria-hidden="true"></i>  About Me</h1>
+  <p>This project was developed by <a id="developer" href="https://github.com/twathey" data-toggle="tooltip" data-placement="top" title="Aspiring MIS visionary">Tyler Wathey</a>, a current MIS Major at the University of Delaware within the Lerner College.</p>
+</div>
+
+<div class="container">
+  <h1 class="mt-5"><i class="fa fa-camera" aria-hidden="true"></i> Creator</h1>
+  <p><img src="{{ url_for('static', filename='img/profile.jpg') }}" alt="Creator Page" style="width:225px;height:250px;"></p>
+</div>
+
+
+{% endblock%} {% block scripts%} {{super()}}
+<script>
+  $(document).ready(function() {
+    $('#developer').tooltip()
+  });
+</script>
+{% endblock%}
